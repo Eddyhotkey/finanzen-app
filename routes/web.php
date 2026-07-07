@@ -32,4 +32,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
+// Transaction;
+use App\Http\Controllers\TransactionController;
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('categories', CategoryController::class);
+    Route::resource('transactions', TransactionController::class);
+});
+
 require __DIR__.'/auth.php';
