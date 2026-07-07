@@ -5,6 +5,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PlannedTransactionController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -33,11 +36,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Transaction;
-use App\Http\Controllers\TransactionController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('transactions', TransactionController::class);
 });
+
+Route::get('/dashboard', DashboardController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+
+Route::resource('planned-transactions', PlannedTransactionController::class);
+
+Route::post(
+    'planned-transactions/{plannedTransaction}/pay',
+    [PlannedTransactionController::class, 'pay']
+)->name('planned-transactions.pay');
 
 require __DIR__.'/auth.php';

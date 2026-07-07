@@ -39,4 +39,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Transaction::class);
     }
+
+    public function plannedTransactions()
+    {
+        return $this->hasMany(\App\Models\PlannedTransaction::class);
+    }
 }

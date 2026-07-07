@@ -30,6 +30,9 @@ import { Link } from '@inertiajs/vue3';
                     <Link href="/reports/year" class="block rounded px-4 py-2 hover:bg-gray-800">
                         Jahresübersicht
                     </Link>
+                    <Link href="/planned-transactions" class="block rounded px-4 py-2 hover:bg-gray-800">
+                        Geplante Ausgaben
+                    </Link>
                 </nav>
             </aside>
 

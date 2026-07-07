@@ -1,6 +1,13 @@
 <script setup>
 import { computed } from 'vue';
+
 import CategoryIcon from '@/Components/CategoryIcon.vue';
+
+import Input from '@/Components/UI/Input.vue';
+
+import InputLabel from '@/Components/UI/InputLabel.vue';
+
+import InputError from '@/Components/UI/InputError.vue';
 
 const props = defineProps({
     form: Object,
@@ -55,22 +62,16 @@ const filteredCategories = computed(() => {
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700">
-                Betrag
-            </label>
-
-            <input
+            <InputLabel value="Betrag" />
+            <Input
                 v-model="form.amount"
                 type="number"
                 step="0.01"
-                min="0"
-                class="mt-1 w-full rounded border-gray-300"
-                placeholder="0.00"
+                min="0.01"
+                placeholder="0,00"
             />
 
-            <p v-if="form.errors.amount" class="mt-1 text-sm text-red-600">
-                {{ form.errors.amount }}
-            </p>
+            <InputError :message="form.errors.amount" />
         </div>
 
         <div>
