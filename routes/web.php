@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PlannedTransactionController;
 use App\Http\Controllers\MonthlyReportController;
 use App\Http\Controllers\YearlyReportController;
+use App\Http\Controllers\BudgetController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -66,5 +67,9 @@ Route::get('/reports/month/{year?}/{month?}', MonthlyReportController::class)
 Route::get('/reports/year/{year?}', YearlyReportController::class)
     ->middleware(['auth', 'verified'])
     ->name('reports.year');
+
+
+Route::resource('budgets', BudgetController::class)
+    ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';

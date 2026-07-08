@@ -1,6 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/vue3';
+import { useMoney } from '@/Composables/useMoney';
 
 import { computed } from 'vue';
 import { Line } from 'vue-chartjs';
@@ -58,11 +59,7 @@ const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
 };
-const money = (value) =>
-    Number(value).toLocaleString('de-DE', {
-        style: 'currency',
-        currency: 'EUR',
-    });
+const { money } = useMoney();
 </script>
 
 <template>

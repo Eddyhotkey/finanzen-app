@@ -2,6 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import CategoryIcon from '@/Components/CategoryIcon.vue';
 import { Link, router } from '@inertiajs/vue3';
+import { useDate } from '@/Composables/useDate';
 
 defineProps({
     transactions: Array,
@@ -16,9 +17,9 @@ const formatMoney = (amount, type) => {
     return type === 'income' ? `+ ${value}` : `- ${value}`;
 };
 
-const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('de-DE');
-};
+
+
+const { formatDate } = useDate();
 
 const deleteTransaction = (transaction) => {
     if (confirm('Diese Buchung wirklich löschen?')) {

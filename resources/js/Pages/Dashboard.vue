@@ -2,6 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import StatCard from '@/Components/UI/StatCard.vue';
 import CategoryIcon from '@/Components/CategoryIcon.vue';
+import { useDate } from '@/Composables/useDate';
 
 defineProps({
     month: String,
@@ -17,7 +18,10 @@ const money = (value) =>
         currency: 'EUR',
     });
 
-const formatDate = (date) => new Date(date).toLocaleDateString('de-DE');
+
+
+const { formatDate } = useDate();
+
 </script>
 
 <template>

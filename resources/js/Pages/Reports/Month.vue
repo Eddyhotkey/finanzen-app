@@ -3,6 +3,8 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import StatCard from '@/Components/UI/StatCard.vue';
 import CategoryIcon from '@/Components/CategoryIcon.vue';
 import { Link } from '@inertiajs/vue3';
+import { useMoney } from '@/Composables/useMoney';
+import { useDate } from '@/Composables/useDate';
 
 defineProps({
     month: Object,
@@ -11,13 +13,8 @@ defineProps({
     plannedTransactions: Array,
 });
 
-const money = (value) =>
-    Number(value).toLocaleString('de-DE', {
-        style: 'currency',
-        currency: 'EUR',
-    });
-
-const formatDate = (date) => new Date(date).toLocaleDateString('de-DE');
+const { money } = useMoney();
+const { formatDate } = useDate();
 
 const formatMoney = (amount, type) => {
     return `${type === 'income' ? '+' : '-'} ${money(amount)}`;
