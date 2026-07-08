@@ -8,6 +8,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PlannedTransactionController;
+use App\Http\Controllers\MonthlyReportController;
+use App\Http\Controllers\YearlyReportController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -53,5 +55,16 @@ Route::post(
     'planned-transactions/{plannedTransaction}/pay',
     [PlannedTransactionController::class, 'pay']
 )->name('planned-transactions.pay');
+
+
+
+Route::get('/reports/month/{year?}/{month?}', MonthlyReportController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('reports.month');
+
+
+Route::get('/reports/year/{year?}', YearlyReportController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('reports.year');
 
 require __DIR__.'/auth.php';

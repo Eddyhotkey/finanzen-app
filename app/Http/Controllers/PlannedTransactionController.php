@@ -55,6 +55,9 @@ class PlannedTransactionController extends Controller
                 'amount' => $plannedTransaction->amount,
                 'due_date' => $plannedTransaction->due_date->format('Y-m-d'),
                 'description' => $plannedTransaction->description,
+                'repeat_type' => $plannedTransaction->repeat_type,
+                'repeat_day' => $plannedTransaction->repeat_day,
+                'repeat_until' => $plannedTransaction->repeat_until?->format('Y-m-d'),
             ],
 
             'categories' => Category::where('user_id', auth()->id())

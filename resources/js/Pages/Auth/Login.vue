@@ -7,6 +7,7 @@ import PrimaryButton from '@/Components/UI/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+
 defineProps({
     canResetPassword: {
         type: Boolean,
@@ -88,6 +89,7 @@ const submit = () => {
                 </Link>
 
                 <PrimaryButton
+                    type="submit"
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
