@@ -11,6 +11,7 @@ use App\Http\Controllers\PlannedTransactionController;
 use App\Http\Controllers\MonthlyReportController;
 use App\Http\Controllers\YearlyReportController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\AccountController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -70,6 +71,11 @@ Route::get('/reports/year/{year?}', YearlyReportController::class)
 
 
 Route::resource('budgets', BudgetController::class)
+    ->middleware(['auth', 'verified']);
+
+
+
+Route::resource('accounts', AccountController::class)
     ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';

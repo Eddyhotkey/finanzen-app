@@ -13,6 +13,7 @@ class Transaction extends Model
         'amount',
         'date',
         'description',
+        'account_id',
     ];
 
     protected $casts = [
@@ -23,5 +24,10 @@ class Transaction extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 }

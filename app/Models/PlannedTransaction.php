@@ -18,6 +18,7 @@ class PlannedTransaction extends Model
         'repeat_day',
         'repeat_until',
         'parent_id',
+        'account_id',
     ];
 
     protected $casts = [
@@ -34,5 +35,10 @@ class PlannedTransaction extends Model
     public function createdTransaction()
     {
         return $this->belongsTo(Transaction::class, 'created_transaction_id');
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 }

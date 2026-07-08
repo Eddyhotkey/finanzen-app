@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Budget::class);
     }
+
+    public function accounts()
+    {
+        return $this->hasMany(\App\Models\Account::class);
+    }
 }

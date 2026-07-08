@@ -37,6 +37,10 @@ import { Link } from '@inertiajs/vue3';
                         Budgets
                     </Link>
 
+                    <Link href="/accounts" class="block rounded px-4 py-2 hover:bg-gray-800">
+                        Konto
+                    </Link>
+
                 </nav>
             </aside>
 

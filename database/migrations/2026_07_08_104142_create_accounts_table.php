@@ -13,10 +13,24 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->string('name');
+            $table->enum('type', ['checking', 'savings', 'cash', 'credit_card', 'depot'])
+                ->default('checking');
+
+            $table->decimal('initial_balance', 12, 2)->default(0);
+            $table->string('color')->nullable();
+            $table->string('icon')->nullable();
+
+            $table->boolean('is_active')->default(true);
+
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

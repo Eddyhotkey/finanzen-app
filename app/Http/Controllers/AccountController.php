@@ -2,64 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreAccountRequest;
+use App\Http\Requests\UpdateAccountRequest;
 use App\Models\Account;
-use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AccountController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $accounts = Account::where('user_id', auth()->id())
+            ->orderByDesc('is_active')
+            ->orderBy('name')
+            ->get();
+
+        return Inertia::render('Accounts/Index', [
+            'accounts' => $accounts,
+            'totalBalance' => $accounts->where('is_active', true)->sum('initial_balance'),
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return Inertia::render('Accounts/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreAccountRequest $request)
     {
-        //
+        $request->user()->accounts()->create($request->validated());
+
+        return redirect()->route('accounts.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Account $account)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Account $account)
     {
-        //
+        abort_if($account->user_id !== auth()->id(), 403);
+
+        return Inertia::render('Accounts/Edit', [
+            'account' => $account,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Account $account)
+    public function update(UpdateAccountRequest $request, Account $account)
     {
-        //
+        abort_if($account->user_id !== auth()->id(), 403);
+
+        $account->update($request->validated());
+
+        return redirect()->route('accounts.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Account $account)
     {
-        //
+        abort_if($account->user_id !== auth()->id(), 403);
+
+        $account->delete();
+
+        return redirect()->route('accounts.index');
     }
 }
