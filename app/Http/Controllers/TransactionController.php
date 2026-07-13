@@ -35,7 +35,7 @@ class TransactionController extends Controller
     {
         $request->user()->transactions()->create($request->validated());
 
-        return redirect()->route('transactions.index');
+        return redirect()->route('transactions.index')->with('success', 'Buchung gespeichert.');
     }
 
     public function edit(Transaction $transaction)
@@ -57,7 +57,7 @@ class TransactionController extends Controller
 
         $transaction->update($request->validated());
 
-        return redirect()->route('transactions.index');
+        return redirect()->route('transactions.index')->with('success', 'Buchung aktualisiert.');
     }
 
     public function destroy(Transaction $transaction)
@@ -66,6 +66,6 @@ class TransactionController extends Controller
 
         $transaction->delete();
 
-        return redirect()->route('transactions.index');
+        return redirect()->route('transactions.index')->with('success', 'Buchung gelöscht.');
     }
 }

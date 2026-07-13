@@ -16,164 +16,134 @@ defineProps({
 const { money } = useMoney();
 const { formatDate } = useDate();
 
-const formatMoney = (amount, type) => {
-    return `${type === 'income' ? '+' : '-'} ${money(amount)}`;
-};
+const formatMoney = (amount, type) =>
+    `${type === 'income' ? '+' : '-'} ${money(amount)}`;
 </script>
 
 <template>
     <AppLayout>
-        <template #title>
-            Monatsübersicht
-        </template>
+        <template #title>Monatsübersicht</template>
 
-        <div class="space-y-8">
-            <div class="flex items-center justify-between">
+        <div class="space-y-6">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <Link
                     :href="route('reports.month', [month.previous.year, month.previous.month])"
-                    class="rounded bg-white px-4 py-2 text-sm shadow hover:bg-gray-50"
+                    class="rounded bg-card px-4 py-2 text-center text-sm shadow hover:bg-muted"
                 >
                     ← Vorheriger Monat
                 </Link>
 
                 <div class="text-center">
-                    <h2 class="text-3xl font-bold text-gray-900">
+                    <h2 class="text-2xl font-bold text-foreground sm:text-3xl">
                         {{ month.label }}
                     </h2>
-                    <p class="text-gray-500">
+                    <p class="text-sm text-muted-foreground sm:text-base">
                         Monatliche Finanzübersicht
                     </p>
                 </div>
 
                 <Link
                     :href="route('reports.month', [month.next.year, month.next.month])"
-                    class="rounded bg-white px-4 py-2 text-sm shadow hover:bg-gray-50"
+                    class="rounded bg-card px-4 py-2 text-center text-sm shadow hover:bg-muted"
                 >
                     Nächster Monat →
                 </Link>
             </div>
 
-            <div class="grid gap-6 md:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 <StatCard title="Einnahmen" :value="money(summary.income)" color="text-green-600" />
                 <StatCard title="Ausgaben" :value="money(summary.expenses)" color="text-red-600" />
                 <StatCard title="Saldo" :value="money(summary.balance)" :color="summary.balance >= 0 ? 'text-green-600' : 'text-red-600'" />
-            </div>
-
-            <div class="grid gap-6 md:grid-cols-3">
                 <StatCard title="Geplante Einnahmen" :value="money(summary.plannedIncome)" color="text-green-600" />
                 <StatCard title="Geplante Ausgaben" :value="money(summary.plannedExpenses)" color="text-red-600" />
                 <StatCard title="Prognose" :value="money(summary.forecast)" :color="summary.forecast >= 0 ? 'text-green-600' : 'text-red-600'" />
             </div>
 
-            <div class="grid gap-6 lg:grid-cols-2">
-                <div class="overflow-hidden rounded-lg bg-white shadow">
-                    <div class="border-b px-6 py-4">
-                        <h3 class="font-semibold text-gray-800">
-                            Alle Buchungen
-                        </h3>
-                    </div>
+            <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                <div class="rounded-xl border border-border bg-card p-4 shadow-sm sm:p-6">
+                    <h3 class="mb-4 font-semibold text-foreground">
+                        Alle Buchungen
+                    </h3>
 
-                    <table class="w-full text-left text-sm">
-                        <tbody>
-                        <tr
+                    <div v-if="transactions.length" class="space-y-3">
+                        <div
                             v-for="transaction in transactions"
                             :key="transaction.id"
-                            class="border-b last:border-0"
+                            class="flex flex-col gap-3 border-b border-border pb-3 last:border-0 sm:flex-row sm:items-center sm:justify-between"
                         >
-                            <td class="px-6 py-4 text-gray-600">
-                                {{ formatDate(transaction.date) }}
-                            </td>
+                            <div class="flex min-w-0 items-center gap-3">
+                                <span
+                                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+                                    :style="{ backgroundColor: transaction.category.color + '22', color: transaction.category.color }"
+                                >
+                                    <CategoryIcon :icon="transaction.category.icon" />
+                                </span>
 
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-2">
-                                        <span
-                                            class="flex h-8 w-8 items-center justify-center rounded-full"
-                                            :style="{ backgroundColor: transaction.category.color + '22', color: transaction.category.color }"
-                                        >
-                                            <CategoryIcon :icon="transaction.category.icon" />
-                                        </span>
-
-                                    <div>
-                                        <p class="font-medium text-gray-900">
-                                            {{ transaction.description || transaction.category.name }}
-                                        </p>
-                                        <p class="text-xs text-gray-500">
-                                            {{ transaction.category.name }}
-                                        </p>
-                                    </div>
+                                <div class="min-w-0">
+                                    <p class="truncate font-medium text-foreground">
+                                        {{ transaction.description || transaction.category.name }}
+                                    </p>
+                                    <p class="text-sm text-muted-foreground">
+                                        {{ transaction.category.name }} · {{ formatDate(transaction.date) }}
+                                    </p>
                                 </div>
-                            </td>
+                            </div>
 
-                            <td
-                                class="px-6 py-4 text-right font-semibold"
+                            <div
+                                class="text-right font-semibold"
                                 :class="transaction.type === 'income' ? 'text-green-600' : 'text-red-600'"
                             >
                                 {{ formatMoney(transaction.amount, transaction.type) }}
-                            </td>
-                        </tr>
-
-                        <tr v-if="transactions.length === 0">
-                            <td colspan="3" class="px-6 py-8 text-center text-gray-500">
-                                Keine Buchungen in diesem Monat.
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="overflow-hidden rounded-lg bg-white shadow">
-                    <div class="border-b px-6 py-4">
-                        <h3 class="font-semibold text-gray-800">
-                            Offene geplante Buchungen
-                        </h3>
+                            </div>
+                        </div>
                     </div>
 
-                    <table class="w-full text-left text-sm">
-                        <tbody>
-                        <tr
+                    <p v-else class="py-6 text-center text-muted-foreground">
+                        Keine Buchungen in diesem Monat.
+                    </p>
+                </div>
+
+                <div class="rounded-xl border border-border bg-card p-4 shadow-sm sm:p-6">
+                    <h3 class="mb-4 font-semibold text-foreground">
+                        Offene geplante Buchungen
+                    </h3>
+
+                    <div v-if="plannedTransactions.length" class="space-y-3">
+                        <div
                             v-for="item in plannedTransactions"
                             :key="item.id"
-                            class="border-b last:border-0"
+                            class="flex flex-col gap-3 border-b border-border pb-3 last:border-0 sm:flex-row sm:items-center sm:justify-between"
                         >
-                            <td class="px-6 py-4 text-gray-600">
-                                {{ formatDate(item.due_date) }}
-                            </td>
+                            <div class="flex min-w-0 items-center gap-3">
+                                <span
+                                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+                                    :style="{ backgroundColor: item.category.color + '22', color: item.category.color }"
+                                >
+                                    <CategoryIcon :icon="item.category.icon" />
+                                </span>
 
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-2">
-                                        <span
-                                            class="flex h-8 w-8 items-center justify-center rounded-full"
-                                            :style="{ backgroundColor: item.category.color + '22', color: item.category.color }"
-                                        >
-                                            <CategoryIcon :icon="item.category.icon" />
-                                        </span>
-
-                                    <div>
-                                        <p class="font-medium text-gray-900">
-                                            {{ item.description || item.category.name }}
-                                        </p>
-                                        <p class="text-xs text-gray-500">
-                                            {{ item.category.name }}
-                                        </p>
-                                    </div>
+                                <div class="min-w-0">
+                                    <p class="truncate font-medium text-foreground">
+                                        {{ item.description || item.category.name }}
+                                    </p>
+                                    <p class="text-sm text-muted-foreground">
+                                        {{ item.category.name }} · {{ formatDate(item.due_date) }}
+                                    </p>
                                 </div>
-                            </td>
+                            </div>
 
-                            <td
-                                class="px-6 py-4 text-right font-semibold"
+                            <div
+                                class="text-right font-semibold"
                                 :class="item.type === 'income' ? 'text-green-600' : 'text-red-600'"
                             >
                                 {{ formatMoney(item.amount, item.type) }}
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
+                    </div>
 
-                        <tr v-if="plannedTransactions.length === 0">
-                            <td colspan="3" class="px-6 py-8 text-center text-gray-500">
-                                Keine offenen geplanten Buchungen in diesem Monat.
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <p v-else class="py-6 text-center text-muted-foreground">
+                        Keine offenen geplanten Buchungen in diesem Monat.
+                    </p>
                 </div>
             </div>
         </div>

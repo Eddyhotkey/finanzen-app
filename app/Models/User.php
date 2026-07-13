@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasPushSubscriptions;
 
     /**
      * Get the attributes that should be cast.
@@ -53,5 +54,50 @@ class User extends Authenticatable
     public function accounts()
     {
         return $this->hasMany(\App\Models\Account::class);
+    }
+
+    public function savingsGoals()
+    {
+        return $this->hasMany(\App\Models\SavingsGoal::class);
+    }
+
+    public function plannerCategories()
+    {
+        return $this->hasMany(\App\Models\PlannerCategory::class);
+    }
+
+    public function plannerTasks()
+    {
+        return $this->hasMany(\App\Models\PlannerTask::class);
+    }
+
+    public function plannerAppointments()
+    {
+        return $this->hasMany(\App\Models\PlannerAppointment::class);
+    }
+
+    public function plannerDailyNotes()
+    {
+        return $this->hasMany(\App\Models\PlannerDailyNote::class);
+    }
+
+    public function plannerWeekNotes()
+    {
+        return $this->hasMany(\App\Models\PlannerWeekNote::class);
+    }
+
+    public function plannerMonthNotes()
+    {
+        return $this->hasMany(\App\Models\PlannerMonthNote::class);
+    }
+
+    public function plannerSpecialPeriods()
+    {
+        return $this->hasMany(\App\Models\PlannerSpecialPeriod::class);
+    }
+
+    public function plannerYearGoals()
+    {
+        return $this->hasMany(\App\Models\PlannerYearGoal::class);
     }
 }

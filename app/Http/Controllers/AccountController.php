@@ -31,7 +31,7 @@ class AccountController extends Controller
     {
         $request->user()->accounts()->create($request->validated());
 
-        return redirect()->route('accounts.index');
+        return redirect()->route('accounts.index')->with('success', 'Konto gespeichert.');
     }
 
     public function edit(Account $account)
@@ -49,7 +49,7 @@ class AccountController extends Controller
 
         $account->update($request->validated());
 
-        return redirect()->route('accounts.index');
+        return redirect()->route('accounts.index')->with('success', 'Konto aktualisiert.');
     }
 
     public function destroy(Account $account)
@@ -58,6 +58,6 @@ class AccountController extends Controller
 
         $account->delete();
 
-        return redirect()->route('accounts.index');
+        return redirect()->route('accounts.index')->with('success', 'Konto gelöscht.');
     }
 }

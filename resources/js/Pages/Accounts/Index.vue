@@ -2,6 +2,8 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
 import { useMoney } from '@/Composables/useMoney';
+import CategoryIcon from '@/Components/CategoryIcon.vue';
+import { useConfirm } from '@/Composables/useConfirm';
 
 defineProps({
     accounts: Array,
@@ -9,6 +11,7 @@ defineProps({
 });
 
 const { money } = useMoney();
+const { confirm } = useConfirm();
 
 const typeLabel = (type) => ({
     checking: 'Girokonto',
@@ -18,8 +21,8 @@ const typeLabel = (type) => ({
     depot: 'Depot',
 }[type] ?? type);
 
-const remove = (account) => {
-    if (confirm('Konto wirklich löschen?')) {
+const remove = async (account) => {
+    if (await confirm('Konto wirklich löschen?')) {
         router.delete(route('accounts.destroy', account.id));
     }
 };
@@ -34,17 +37,17 @@ const remove = (account) => {
 
             <Link
                 :href="route('accounts.create')"
-                class="rounded-lg bg-gray-900 px-4 py-2 text-white hover:bg-gray-800"
+                class="rounded-lg bg-primary px-4 py-2 text-primary-foreground hover:bg-primary-hover"
             >
                 + Neues Konto
             </Link>
         </div>
-        <div class="mb-6 rounded-xl border bg-white p-6 shadow-sm">
-            <p class="text-sm text-gray-500">
+        <div class="mb-6 rounded-xl border border-border bg-card p-6 shadow-sm">
+            <p class="text-sm text-muted-foreground">
                 Gesamtbetrag auf aktiven Konten
             </p>
 
-            <p class="mt-2 text-3xl font-bold text-gray-900">
+            <p class="mt-2 text-3xl font-bold text-foreground">
                 {{ money(totalBalance) }}
             </p>
         </div>
@@ -52,8 +55,8 @@ const remove = (account) => {
             <div
                 v-for="account in accounts"
                 :key="account.id"
-                class="rounded-xl border bg-white p-6 shadow-sm"
-                :class="account.is_active ? 'border-gray-200' : 'border-gray-100 opacity-60'"
+                class="rounded-xl border bg-card p-6 shadow-sm"
+                :class="account.is_active ? 'border-border' : 'border-border opacity-60'"
             >
                 <div class="flex items-start justify-between gap-4">
                     <div class="flex items-center gap-3">
@@ -61,15 +64,15 @@ const remove = (account) => {
                             class="flex h-11 w-11 items-center justify-center rounded-full text-white"
                             :style="{ backgroundColor: account.color || '#111827' }"
                         >
-                            {{ account.icon || '€' }}
+                            <CategoryIcon :icon="account.icon" />
                         </span>
 
                         <div>
-                            <h3 class="font-semibold text-gray-900">
+                            <h3 class="font-semibold text-foreground">
                                 {{ account.name }}
                             </h3>
 
-                            <p class="text-sm text-gray-500">
+                            <p class="text-sm text-muted-foreground">
                                 {{ typeLabel(account.type) }}
                             </p>
                         </div>
@@ -77,20 +80,20 @@ const remove = (account) => {
 
                     <span
                         class="rounded-full px-3 py-1 text-xs font-medium"
-                        :class="account.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
+                        :class="account.is_active ? 'bg-green-100 text-green-700' : 'bg-muted text-muted-foreground'"
                     >
                         {{ account.is_active ? 'Aktiv' : 'Inaktiv' }}
                     </span>
                 </div>
 
                 <div class="mt-6">
-                    <p class="text-sm text-gray-500">Aktueller Stand</p>
-                    <p class="text-2xl font-bold text-gray-900">
+                    <p class="text-sm text-muted-foreground">Aktueller Stand</p>
+                    <p class="text-2xl font-bold text-foreground">
                         {{ money(account.initial_balance) }}
                     </p>
                 </div>
 
-                <div class="mt-5 flex justify-end gap-4 border-t pt-4 text-sm">
+                <div class="mt-5 flex justify-end gap-4 border-t border-border pt-4 text-sm">
                     <Link
                         :href="route('accounts.edit', account.id)"
                         class="text-blue-600 hover:underline"
@@ -108,7 +111,7 @@ const remove = (account) => {
             </div>
         </div>
 
-        <div v-else class="rounded-xl border bg-white p-10 text-center text-gray-500 shadow-sm">
+        <div v-else class="rounded-xl border border-border bg-card p-10 text-center text-muted-foreground shadow-sm">
             Noch keine Konten vorhanden.
         </div>
     </AppLayout>

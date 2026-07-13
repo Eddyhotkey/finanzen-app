@@ -9,7 +9,7 @@ defineProps({
 
 <template>
     <div
-        class="rounded-xl border border-gray-200 bg-white shadow-sm"
+        class="rounded-xl border border-border bg-card shadow-sm"
         :class="{ 'p-6': padding }"
     >
         <slot />

@@ -20,6 +20,23 @@ const icons = [
     { value: 'computer', label: 'Computer' },
     { value: 'entertainment', label: 'Freizeit' },
     { value: 'work', label: 'Arbeit' },
+    { value: 'insurance', label: 'Versicherung' },
+    { value: 'savings', label: 'Sparen' },
+    { value: 'clothing', label: 'Kleidung' },
+    { value: 'subscriptions', label: 'Abos' },
+    { value: 'sport', label: 'Sport & Fitness' },
+    { value: 'travel', label: 'Reisen' },
+    { value: 'music', label: 'Musik' },
+    { value: 'taxes', label: 'Steuern' },
+    { value: 'credit-card', label: 'Kreditkarte' },
+    { value: 'charity', label: 'Spende' },
+    { value: 'tickets', label: 'Veranstaltungen' },
+    { value: 'books', label: 'Bücher' },
+    { value: 'rent', label: 'Miete' },
+    { value: 'bank', label: 'Bank/Finanzen' },
+    { value: 'investment', label: 'Investitionen' },
+    { value: 'care', label: 'Pflege/Beauty' },
+    { value: 'goal', label: 'Ziel' },
 ];
 </script>
 
@@ -30,8 +47,8 @@ const icons = [
             :key="icon.value"
             type="button"
             @click="model = icon.value"
-            class="flex items-center gap-2 rounded border px-3 py-2 text-sm hover:bg-gray-50"
-            :class="model === icon.value ? 'border-gray-900 bg-gray-100' : 'border-gray-200'"
+            class="flex items-center gap-2 rounded border px-3 py-2 text-sm hover:bg-muted"
+            :class="model === icon.value ? 'border-foreground bg-muted' : 'border-border'"
         >
             <CategoryIcon :icon="icon.value" />
             <span>{{ icon.label }}</span>

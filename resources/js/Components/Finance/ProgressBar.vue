@@ -20,7 +20,7 @@ const colors = {
 </script>
 
 <template>
-    <div class="h-3 overflow-hidden rounded-full bg-gray-100">
+    <div class="h-3 overflow-hidden rounded-full bg-muted">
         <div
             class="h-3 rounded-full transition-all duration-300"
             :class="colors[color]"

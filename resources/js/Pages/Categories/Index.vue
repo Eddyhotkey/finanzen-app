@@ -2,13 +2,16 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
 import CategoryIcon from '@/Components/CategoryIcon.vue';
+import { useConfirm } from '@/Composables/useConfirm';
 
 defineProps({
     categories: Array,
 });
 
-const deleteCategory = (category) => {
-    if (confirm(`Kategorie "${category.name}" wirklich löschen?`)) {
+const { confirm } = useConfirm();
+
+const deleteCategory = async (category) => {
+    if (await confirm(`Kategorie "${category.name}" wirklich löschen?`)) {
         router.delete(route('categories.destroy', category.id));
     }
 };
@@ -21,21 +24,21 @@ const deleteCategory = (category) => {
         </template>
 
         <div class="mb-6 flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-800">
+            <h2 class="text-lg font-semibold text-foreground">
                 Kategorien
             </h2>
 
             <Link
                 href="/categories/create"
-                class="rounded bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+                class="rounded bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary-hover"
             >
                 Neue Kategorie
             </Link>
         </div>
 
-        <div class="overflow-hidden rounded-lg bg-white shadow">
+        <div class="overflow-hidden rounded-lg bg-card shadow">
             <table class="w-full text-left text-sm">
-                <thead class="bg-gray-50 text-gray-600">
+                <thead class="bg-muted text-muted-foreground">
                 <tr>
                     <th class="px-6 py-3">Farbe</th>
                     <th class="px-6 py-3">Name</th>
@@ -49,7 +52,7 @@ const deleteCategory = (category) => {
                 <tr
                     v-for="category in categories"
                     :key="category.id"
-                    class="border-t"
+                    class="border-t border-border"
                 >
                     <td class="px-6 py-4">
                             <span
@@ -58,7 +61,7 @@ const deleteCategory = (category) => {
                             ></span>
                     </td>
 
-                    <td class="px-6 py-4 font-medium text-gray-900">
+                    <td class="px-6 py-4 font-medium text-foreground">
                         {{ category.name }}
                     </td>
 
@@ -93,7 +96,7 @@ const deleteCategory = (category) => {
                 </tr>
 
                 <tr v-if="categories.length === 0">
-                    <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                    <td colspan="5" class="px-6 py-8 text-center text-muted-foreground">
                         Noch keine Kategorien vorhanden.
                     </td>
                 </tr>

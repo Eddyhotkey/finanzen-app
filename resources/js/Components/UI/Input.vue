@@ -21,6 +21,6 @@ defineEmits(['update:modelValue']);
         :step="step"
         :min="min"
         @input="$emit('update:modelValue', $event.target.value)"
-        class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-slate-500 focus:ring-slate-500"
+        class="mt-1 block w-full rounded-lg border-border shadow-sm focus:border-ring focus:ring-ring"
     />
 </template>

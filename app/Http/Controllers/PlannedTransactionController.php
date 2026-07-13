@@ -40,7 +40,7 @@ class PlannedTransactionController extends Controller
             $request->validated()
         );
 
-        return redirect()->route('planned-transactions.index');
+        return redirect()->route('planned-transactions.index')->with('success', 'Geplante Buchung gespeichert.');
     }
 
     public function edit(PlannedTransaction $plannedTransaction)
@@ -77,7 +77,7 @@ class PlannedTransactionController extends Controller
             $request->validated()
         );
 
-        return redirect()->route('planned-transactions.index');
+        return redirect()->route('planned-transactions.index')->with('success', 'Geplante Buchung aktualisiert.');
     }
 
     public function destroy(PlannedTransaction $plannedTransaction)
@@ -86,7 +86,7 @@ class PlannedTransactionController extends Controller
 
         $plannedTransaction->delete();
 
-        return redirect()->route('planned-transactions.index');
+        return redirect()->route('planned-transactions.index')->with('success', 'Geplante Buchung gelöscht.');
     }
 
     public function pay(PlannedTransaction $plannedTransaction)
@@ -137,6 +137,6 @@ class PlannedTransactionController extends Controller
             }
         });
 
-        return redirect()->route('planned-transactions.index');
+        return redirect()->route('planned-transactions.index')->with('success', 'Als bezahlt markiert.');
     }
 }

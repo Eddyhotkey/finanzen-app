@@ -1,3 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * Semantic color tokens (CSS variables), light values in :root and dark
+ * overrides in .dark — this is the single place to change the app's palette
+ * later. Tailwind maps these to bg-background/text-foreground/bg-card/etc.
+ * in tailwind.config.js via the `rgb(var(--x) / <alpha-value>)` pattern,
+ * so opacity utilities (e.g. bg-card/50) keep working.
+ *
+ * `sidebar`/`sidebar-foreground` intentionally hold the SAME value in both
+ * :root and .dark — the sidebar is already dark by design and shouldn't
+ * flip with the theme toggle.
+ */
+@layer base {
+    :root {
+        --color-background: 243 244 246; /* gray-100 */
+        --color-foreground: 17 24 39; /* gray-900 */
+        --color-card: 255 255 255; /* white */
+        --color-card-foreground: 17 24 39; /* gray-900 */
+        --color-muted: 249 250 251; /* gray-50 */
+        --color-muted-foreground: 107 114 128; /* gray-500 */
+        --color-border: 209 213 219; /* gray-300 */
+        --color-primary: 15 23 42; /* slate-900 */
+        --color-primary-hover: 30 41 59; /* slate-800 */
+        --color-primary-foreground: 255 255 255; /* white */
+        --color-ring: 100 116 139; /* slate-500 */
+        --color-sidebar: 17 24 39; /* gray-900 */
+        --color-sidebar-foreground: 255 255 255; /* white */
+    }
+
+    .dark {
+        --color-background: 3 7 18; /* gray-950 */
+        --color-foreground: 243 244 246; /* gray-100 */
+        --color-card: 31 41 55; /* gray-800 */
+        --color-card-foreground: 243 244 246; /* gray-100 */
+        --color-muted: 17 24 39; /* gray-900 */
+        --color-muted-foreground: 156 163 175; /* gray-400 */
+        --color-border: 55 65 81; /* gray-700 */
+        --color-primary: 226 232 240; /* slate-200 */
+        --color-primary-hover: 203 213 225; /* slate-300 */
+        --color-primary-foreground: 15 23 42; /* slate-900 */
+        --color-ring: 148 163 184; /* slate-400 */
+        --color-sidebar: 17 24 39; /* gray-900 */
+        --color-sidebar-foreground: 255 255 255; /* white */
+    }
+}

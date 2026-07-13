@@ -31,13 +31,13 @@ const submit = () => {
         <div class="mb-6">
             <Link
                 :href="route('transactions.index')"
-                class="text-sm text-gray-600 hover:underline"
+                class="text-sm text-muted-foreground hover:underline"
             >
                 ← Zurück zu Buchungen
             </Link>
         </div>
 
-        <div class="max-w-xl rounded-lg bg-white p-6 shadow">
+        <div class="max-w-xl rounded-lg bg-card p-6 shadow">
             <TransactionForm
                 :form="form"
                 :categories="categories"

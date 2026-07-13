@@ -33,7 +33,7 @@ class BudgetController extends Controller
     {
         $request->user()->budgets()->create($request->validated());
 
-        return redirect()->route('budgets.index');
+        return redirect()->route('budgets.index')->with('success', 'Budget gespeichert.');
     }
 
     public function edit(Budget $budget)
@@ -55,7 +55,7 @@ class BudgetController extends Controller
 
         $budget->update($request->validated());
 
-        return redirect()->route('budgets.index');
+        return redirect()->route('budgets.index')->with('success', 'Budget aktualisiert.');
     }
 
     public function destroy(Budget $budget)
@@ -64,6 +64,6 @@ class BudgetController extends Controller
 
         $budget->delete();
 
-        return redirect()->route('budgets.index');
+        return redirect()->route('budgets.index')->with('success', 'Budget gelöscht.');
     }
 }

@@ -4,14 +4,14 @@ defineProps({
     value: [String, Number],
     color: {
         type: String,
-        default: 'text-slate-800',
+        default: 'text-foreground',
     },
 });
 </script>
 
 <template>
-    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-        <p class="text-sm text-gray-500">
+    <div class="rounded-xl border border-border bg-card p-6 shadow-sm">
+        <p class="text-sm text-muted-foreground">
             {{ title }}
         </p>
 

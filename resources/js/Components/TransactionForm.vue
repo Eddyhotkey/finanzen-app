@@ -28,7 +28,7 @@ const filteredCategories = computed(() => {
 <template>
     <form @submit.prevent="emit('submit')" class="space-y-5">
         <div>
-            <label class="block text-sm font-medium text-gray-700">
+            <label class="block text-sm font-medium text-foreground">
                 Typ
             </label>
 
@@ -39,7 +39,7 @@ const filteredCategories = computed(() => {
                     class="rounded border px-4 py-2 text-sm"
                     :class="form.type === 'expense'
                         ? 'border-red-600 bg-red-50 text-red-700'
-                        : 'border-gray-200 hover:bg-gray-50'"
+                        : 'border-border hover:bg-muted'"
                 >
                     Ausgabe
                 </button>
@@ -50,7 +50,7 @@ const filteredCategories = computed(() => {
                     class="rounded border px-4 py-2 text-sm"
                     :class="form.type === 'income'
                         ? 'border-green-600 bg-green-50 text-green-700'
-                        : 'border-gray-200 hover:bg-gray-50'"
+                        : 'border-border hover:bg-muted'"
                 >
                     Einnahme
                 </button>
@@ -75,14 +75,14 @@ const filteredCategories = computed(() => {
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700">
+            <label class="block text-sm font-medium text-foreground">
                 Datum
             </label>
 
             <input
                 v-model="form.date"
                 type="date"
-                class="mt-1 w-full rounded border-gray-300"
+                class="mt-1 w-full rounded border-border"
             />
 
             <p v-if="form.errors.date" class="mt-1 text-sm text-red-600">
@@ -91,13 +91,13 @@ const filteredCategories = computed(() => {
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700">
+            <label class="block text-sm font-medium text-foreground">
                 Kategorie
             </label>
 
             <select
                 v-model="form.category_id"
-                class="mt-1 w-full rounded border-gray-300"
+                class="mt-1 w-full rounded border-border"
             >
                 <option value="">Bitte wählen</option>
 
@@ -116,7 +116,7 @@ const filteredCategories = computed(() => {
 
             <div
                 v-if="form.category_id"
-                class="mt-3 flex items-center gap-2 text-sm text-gray-600"
+                class="mt-3 flex items-center gap-2 text-sm text-muted-foreground"
             >
                 <CategoryIcon
                     :icon="categories.find(category => category.id === Number(form.category_id))?.icon"
@@ -128,14 +128,14 @@ const filteredCategories = computed(() => {
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700">
+            <label class="block text-sm font-medium text-foreground">
                 Beschreibung
             </label>
 
             <input
                 v-model="form.description"
                 type="text"
-                class="mt-1 w-full rounded border-gray-300"
+                class="mt-1 w-full rounded border-border"
                 placeholder="z.B. REWE, Gehalt, Tanken..."
             />
 
@@ -148,7 +148,7 @@ const filteredCategories = computed(() => {
             <button
                 type="submit"
                 :disabled="form.processing"
-                class="rounded bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
+                class="rounded bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary-hover disabled:opacity-50"
             >
                 {{ submitText }}
             </button>

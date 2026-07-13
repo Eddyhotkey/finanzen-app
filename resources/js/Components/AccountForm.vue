@@ -4,6 +4,8 @@ import Select from '@/Components/UI/Select.vue';
 import InputLabel from '@/Components/UI/InputLabel.vue';
 import InputError from '@/Components/UI/InputError.vue';
 import PrimaryButton from '@/Components/UI/PrimaryButton.vue';
+import ColorPicker from '@/Components/ColorPicker.vue';
+import IconPicker from '@/Components/IconPicker.vue';
 
 defineProps({
     form: Object,
@@ -44,19 +46,19 @@ const emit = defineEmits(['submit']);
 
         <div>
             <InputLabel value="Farbe" />
-            <Input v-model="form.color" type="color" />
+            <ColorPicker v-model="form.color" />
             <InputError :message="form.errors.color" />
         </div>
 
         <div>
             <InputLabel value="Icon" />
-            <Input v-model="form.icon" type="text" placeholder="z.B. bank, cash, card" />
+            <IconPicker v-model="form.icon" />
             <InputError :message="form.errors.icon" />
         </div>
 
         <label class="flex items-center gap-2">
-            <input v-model="form.is_active" type="checkbox" class="rounded border-gray-300">
-            <span class="text-sm text-gray-700">Aktiv</span>
+            <input v-model="form.is_active" type="checkbox" class="rounded border-border">
+            <span class="text-sm text-foreground">Aktiv</span>
         </label>
 
         <PrimaryButton type="submit" :disabled="form.processing">

@@ -34,7 +34,7 @@ const filteredCategories = computed(() => {
                     class="rounded border px-4 py-2 text-sm"
                     :class="form.type === 'expense'
                         ? 'border-red-600 bg-red-50 text-red-700'
-                        : 'border-gray-200 hover:bg-gray-50'"
+                        : 'border-border hover:bg-muted'"
                 >
                     Ausgabe
                 </button>
@@ -45,7 +45,7 @@ const filteredCategories = computed(() => {
                     class="rounded border px-4 py-2 text-sm"
                     :class="form.type === 'income'
                         ? 'border-green-600 bg-green-50 text-green-700'
-                        : 'border-gray-200 hover:bg-gray-50'"
+                        : 'border-border hover:bg-muted'"
                 >
                     Einnahme
                 </button>

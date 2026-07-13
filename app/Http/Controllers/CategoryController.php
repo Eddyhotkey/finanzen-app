@@ -34,7 +34,7 @@ class CategoryController extends Controller
 
         $request->user()->categories()->create($validated);
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Kategorie gespeichert.');
     }
 
     public function edit(Category $category)
@@ -59,7 +59,7 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Kategorie aktualisiert.');
     }
 
     public function destroy(Category $category)
@@ -68,6 +68,6 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Kategorie gelöscht.');
     }
 }

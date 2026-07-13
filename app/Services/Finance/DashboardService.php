@@ -74,7 +74,7 @@ class DashboardService
             'nextPlannedTransactions' => PlannedTransaction::with('category')
                 ->where('user_id', $userId)
                 ->whereNull('created_transaction_id')
-                ->whereBetween('due_date', [now()->startOfDay(), $end])
+                ->whereBetween('due_date', [$start, $end])
                 ->orderBy('due_date')
                 ->limit(5)
                 ->get(),

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Offline - Finlora</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #f3f4f6;
+            color: #0F172A;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .card {
+            max-width: 24rem;
+            width: 100%;
+            background: #fff;
+            border-radius: 1rem;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .icon {
+            width: 4rem;
+            height: 4rem;
+            margin: 0 auto 1.5rem;
+        }
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        p {
+            color: #6b7280;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+        button {
+            background: #0F766E;
+            color: #fff;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0d5f58;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <svg class="icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="iconGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#0F766E"/>
+                    <stop offset="100%" stop-color="#10B981"/>
+                </linearGradient>
+            </defs>
+            <rect x="10" y="10" width="180" height="180" rx="42" fill="url(#iconGrad)"/>
+            <rect x="52" y="118" width="26" height="52" rx="8" fill="#FFFFFF"/>
+            <rect x="92" y="96" width="26" height="74" rx="8" fill="#FFFFFF"/>
+            <rect x="132" y="66" width="26" height="104" rx="8" fill="#FFFFFF"/>
+            <path d="M124 58 L140 44 L166 62" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <h1>Du bist offline</h1>
+        <p>Diese Seite ist ohne Internetverbindung nicht verfügbar. Bereits besuchte Seiten funktionieren weiterhin.</p>
+        <button onclick="window.location.reload()">Erneut versuchen</button>
+    </div>
+</body>
+</html>

@@ -22,12 +22,12 @@ const submit = () => {
         <template #title>Konto anlegen</template>
 
         <div class="mb-6">
-            <Link :href="route('accounts.index')" class="text-sm text-gray-600 hover:underline">
+            <Link :href="route('accounts.index')" class="text-sm text-muted-foreground hover:underline">
                 ← Zurück
             </Link>
         </div>
 
-        <div class="max-w-xl rounded-xl border bg-white p-6 shadow-sm">
+        <div class="max-w-xl rounded-xl border border-border bg-card p-6 shadow-sm">
             <AccountForm
                 :form="form"
                 submit-text="Konto speichern"

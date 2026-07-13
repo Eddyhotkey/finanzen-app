@@ -27,13 +27,13 @@ const submit = () => {
         <div class="mb-6">
             <Link
                 :href="route('budgets.index')"
-                class="text-sm text-gray-600 hover:underline"
+                class="text-sm text-muted-foreground hover:underline"
             >
                 ← Zurück
             </Link>
         </div>
 
-        <div class="max-w-xl rounded-xl border bg-white p-6 shadow-sm">
+        <div class="max-w-xl rounded-xl border border-border bg-card p-6 shadow-sm">
             <BudgetForm
                 :form="form"
                 :categories="categories"

@@ -6,14 +6,14 @@ defineProps({
     value: [String, Number],
     color: {
         type: String,
-        default: 'text-gray-900',
+        default: 'text-foreground',
     },
 });
 </script>
 
 <template>
-    <div class="rounded-xl border bg-white p-5 shadow-sm">
-        <p class="text-sm text-gray-500">
+    <div class="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <p class="text-sm text-muted-foreground">
             {{ title }}
         </p>
 
