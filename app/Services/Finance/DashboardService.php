@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardService
 {
+    public function __construct(private BudgetService $budgetService)
+    {
+        //
+    }
+
     public function build(User $user): array
     {
         $userId = $user->id;
@@ -26,6 +31,16 @@ class DashboardService
             ->whereBetween('date', [$start, $end])
             ->sum('amount');
 
+        // Kumulierter Saldo über alle Monate hinweg (wie ein echtes Konto),
+        // im Gegensatz zu $income/$expenses, die nur den laufenden Monat zeigen.
+        $allTimeIncome = Transaction::where('user_id', $userId)
+            ->where('type', 'income')
+            ->sum('amount');
+
+        $allTimeExpenses = Transaction::where('user_id', $userId)
+            ->where('type', 'expense')
+            ->sum('amount');
+
         $plannedExpenses = PlannedTransaction::where('user_id', $userId)
             ->whereNull('created_transaction_id')
             ->where('type', 'expense')
@@ -38,8 +53,14 @@ class DashboardService
             ->whereBetween('due_date', [$start, $end])
             ->sum('amount');
 
-        $balance = $income - $expenses;
-        $forecast = $balance + $plannedIncome - $plannedExpenses;
+        // Only the still-unspent, un-planned portion of each budget (never
+        // negative — an over-budget category is already reflected in
+        // $expenses above, so it must not also reduce the forecast twice).
+        $budgetReserve = $this->budgetService->overview($user)
+            ->sum(fn ($budget) => max(0, $budget['remaining']));
+
+        $balance = $allTimeIncome - $allTimeExpenses;
+        $forecast = $balance + $plannedIncome - $plannedExpenses - $budgetReserve;
 
         return [
             'month' => now()->translatedFormat('F Y'),
@@ -50,6 +71,7 @@ class DashboardService
                 'balance' => $balance,
                 'plannedExpenses' => $plannedExpenses,
                 'plannedIncome' => $plannedIncome,
+                'budgetReserve' => $budgetReserve,
                 'forecast' => $forecast,
             ],
 

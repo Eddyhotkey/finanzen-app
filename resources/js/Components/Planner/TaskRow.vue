@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
-import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline';
+import { PencilSquareIcon, TrashIcon, Bars3Icon } from '@heroicons/vue/24/outline';
 import { useConfirm } from '@/Composables/useConfirm';
 
 const { confirm } = useConfirm();
@@ -70,7 +70,11 @@ const destroy = async () => {
 </script>
 
 <template>
-    <div class="flex items-center gap-3 rounded-lg border border-border px-3 py-2">
+    <div class="flex min-w-0 items-center gap-3 rounded-lg border border-border bg-card px-3 py-2">
+        <span class="drag-handle touch-none cursor-grab text-muted-foreground hover:text-foreground active:cursor-grabbing">
+            <Bars3Icon class="h-4 w-4" />
+        </span>
+
         <input
             type="checkbox"
             :checked="task.is_done"
@@ -89,7 +93,7 @@ const destroy = async () => {
             />
             <p
                 v-else
-                class="truncate text-sm"
+                class="max-w-full min-w-0 truncate text-sm"
                 :class="task.is_done ? 'text-muted-foreground line-through' : 'text-foreground'"
             >
                 {{ task.title }}
@@ -119,13 +123,13 @@ const destroy = async () => {
                 v-model="description"
                 rows="2"
                 placeholder="Beschreibung (optional)..."
-                class="mt-2 block w-full rounded-lg border-border text-sm shadow-sm focus:border-ring focus:ring-ring"
+                class="mt-2 block w-full min-w-0 max-w-full rounded-lg border-border text-sm shadow-sm break-words focus:border-ring focus:ring-ring"
                 @blur="saveDescription"
             />
             <p
                 v-else-if="task.description"
                 @click="editingDescription = true"
-                class="mt-1 cursor-pointer truncate text-xs text-muted-foreground hover:text-foreground"
+                class="mt-1 max-w-full min-w-0 cursor-pointer truncate text-xs text-muted-foreground hover:text-foreground"
             >
                 {{ task.description }}
             </p>

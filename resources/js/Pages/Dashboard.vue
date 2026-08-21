@@ -1,11 +1,13 @@
 <script setup>
+import { computed, ref } from 'vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import StatCard from '@/Components/UI/StatCard.vue';
 import CategoryIcon from '@/Components/CategoryIcon.vue';
+import { ChevronDownIcon } from '@heroicons/vue/24/outline';
 import { useMoney } from '@/Composables/useMoney';
 import { useDate } from '@/Composables/useDate';
 
-defineProps({
+const props = defineProps({
     month: String,
     summary: Object,
     latestTransactions: Array,
@@ -15,6 +17,23 @@ defineProps({
 
 const { money } = useMoney();
 const { formatDate } = useDate();
+
+const detailsOpen = ref(false);
+
+const forecastCard = computed(() => ({
+    title: 'Frei verfügbar / Prognose',
+    value: money(props.summary.forecast),
+    color: props.summary.forecast >= 0 ? 'text-green-600' : 'text-red-600',
+}));
+
+const statCards = computed(() => [
+    { title: 'Einnahmen (diesen Monat)', value: money(props.summary.income), color: 'text-green-600' },
+    { title: 'Ausgaben (diesen Monat)', value: money(props.summary.expenses), color: 'text-red-600' },
+    { title: 'Aktueller Saldo (gesamt)', value: money(props.summary.balance), color: props.summary.balance >= 0 ? 'text-green-600' : 'text-red-600' },
+    { title: 'Noch geplante Ausgaben', value: money(props.summary.plannedExpenses), color: 'text-red-600' },
+    { title: 'Verbleibende Budgets', value: money(props.summary.budgetReserve), color: 'text-red-600' },
+    { title: 'Geplante Einnahmen', value: money(props.summary.plannedIncome), color: 'text-green-600' },
+]);
 </script>
 
 <template>
@@ -31,13 +50,28 @@ const { formatDate } = useDate();
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                <StatCard title="Einnahmen" :value="money(summary.income)" color="text-green-600" />
-                <StatCard title="Ausgaben" :value="money(summary.expenses)" color="text-red-600" />
-                <StatCard title="Aktueller Saldo" :value="money(summary.balance)" :color="summary.balance >= 0 ? 'text-green-600' : 'text-red-600'" />
-                <StatCard title="Noch geplante Ausgaben" :value="money(summary.plannedExpenses)" color="text-red-600" />
-                <StatCard title="Geplante Einnahmen" :value="money(summary.plannedIncome)" color="text-green-600" />
-                <StatCard title="Frei verfügbar / Prognose" :value="money(summary.forecast)" :color="summary.forecast >= 0 ? 'text-green-600' : 'text-red-600'" />
+            <!-- Mobile: Prognose angepinnt, Rest im Akkordeon -->
+            <div class="space-y-4 sm:hidden">
+                <StatCard v-bind="forecastCard" />
+
+                <button
+                    type="button"
+                    @click="detailsOpen = !detailsOpen"
+                    class="flex w-full items-center justify-between rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium text-foreground shadow-sm"
+                >
+                    <span>Details {{ detailsOpen ? 'ausblenden' : 'anzeigen' }}</span>
+                    <ChevronDownIcon class="h-4 w-4 transition-transform" :class="{ 'rotate-180': detailsOpen }" />
+                </button>
+
+                <div v-if="detailsOpen" class="grid grid-cols-1 gap-4">
+                    <StatCard v-for="card in statCards" :key="card.title" v-bind="card" />
+                </div>
+            </div>
+
+            <!-- Desktop/Tablet: unverändertes Grid -->
+            <div class="hidden gap-4 sm:grid sm:grid-cols-2 xl:grid-cols-3">
+                <StatCard v-for="card in statCards" :key="card.title" v-bind="card" />
+                <StatCard v-bind="forecastCard" />
             </div>
 
             <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">

@@ -29,16 +29,51 @@ const { money } = useMoney();
 const chartData = computed(() => ({
     labels: props.months.map(month => month.month),
     datasets: [
-        { label: 'Einnahmen', data: props.months.map(month => Number(month.income)) },
-        { label: 'Ausgaben', data: props.months.map(month => Number(month.expenses)) },
-        { label: 'Saldo', data: props.months.map(month => Number(month.balance)) },
-        { label: 'Prognose', data: props.months.map(month => Number(month.forecast)) },
+        {
+            label: 'Einnahmen',
+            data: props.months.map(month => Number(month.income)),
+            borderColor: '#16a34a',
+            backgroundColor: '#16a34a',
+            tension: 0.3,
+            pointRadius: 3,
+        },
+        {
+            label: 'Ausgaben',
+            data: props.months.map(month => Number(month.expenses)),
+            borderColor: '#dc2626',
+            backgroundColor: '#dc2626',
+            tension: 0.3,
+            pointRadius: 3,
+        },
+        {
+            label: 'Saldo',
+            data: props.months.map(month => Number(month.balance)),
+            borderColor: '#2563eb',
+            backgroundColor: '#2563eb',
+            tension: 0.3,
+            pointRadius: 3,
+        },
     ],
 }));
 
 const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+        tooltip: {
+            callbacks: {
+                label: (context) => `${context.dataset.label}: ${money(context.raw)}`,
+            },
+        },
+    },
+    scales: {
+        y: {
+            ticks: {
+                callback: (value) => Number(value).toLocaleString('de-DE') + ' €',
+            },
+        },
+    },
 };
 </script>
 

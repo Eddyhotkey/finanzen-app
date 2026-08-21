@@ -18,7 +18,7 @@ defineProps({
 <template>
     <PlannerLayout :date="date">
         <div class="grid gap-6 lg:grid-cols-3">
-            <div class="space-y-6 lg:col-span-2">
+            <div class="min-w-0 space-y-6 lg:col-span-2">
                 <CategoryTaskGroup
                     v-for="category in categories"
                     :key="category.id"

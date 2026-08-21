@@ -17,6 +17,7 @@ class PlannedTransactionController extends Controller
         return Inertia::render('PlannedTransactions/Index', [
             'plannedTransactions' => PlannedTransaction::with('category')
                 ->where('user_id', auth()->id())
+                ->whereBetween('due_date', [now()->startOfMonth(), now()->endOfMonth()])
                 ->orderBy('due_date')
                 ->orderBy('id')
                 ->get(),

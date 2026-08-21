@@ -2,6 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import StatCard from '@/Components/UI/StatCard.vue';
 import CategoryIcon from '@/Components/CategoryIcon.vue';
+import CategoryExpenseBarChart from '@/Components/Finance/CategoryExpenseBarChart.vue';
 import { Link } from '@inertiajs/vue3';
 import { useMoney } from '@/Composables/useMoney';
 import { useDate } from '@/Composables/useDate';
@@ -58,6 +59,12 @@ const formatMoney = (amount, type) =>
                 <StatCard title="Geplante Ausgaben" :value="money(summary.plannedExpenses)" color="text-red-600" />
                 <StatCard title="Prognose" :value="money(summary.forecast)" :color="summary.forecast >= 0 ? 'text-green-600' : 'text-red-600'" />
             </div>
+
+            <CategoryExpenseBarChart
+                :items="transactions"
+                title="Ausgaben nach Kategorie"
+                orientation="vertical"
+            />
 
             <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
                 <div class="rounded-xl border border-border bg-card p-4 shadow-sm sm:p-6">

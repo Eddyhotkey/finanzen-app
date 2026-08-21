@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { nextTick, ref, watch } from 'vue';
 import { router } from '@inertiajs/vue3';
+import draggable from 'vuedraggable';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline';
 import TaskRow from '@/Components/Planner/TaskRow.vue';
 import ColorPicker from '@/Components/ColorPicker.vue';
@@ -15,6 +16,7 @@ const props = defineProps({
 });
 
 const showAdd = ref(false);
+const titleInput = ref(null);
 const title = ref('');
 const showDescription = ref(false);
 const description = ref('');
@@ -22,6 +24,24 @@ const description = ref('');
 const editing = ref(false);
 const editName = ref(props.category.name);
 const editColor = ref(props.category.color || '#111827');
+
+const localTasks = ref([...props.tasks]);
+watch(() => props.tasks, (tasks) => { localTasks.value = [...tasks]; });
+
+const onDragChange = (event) => {
+    if (!event.added) return;
+
+    const task = event.added.element;
+
+    router.patch(route('planner-tasks.update', task.id), {
+        planner_category_id: props.category.id,
+        title: task.title,
+        description: task.description,
+        date: task.date,
+        priority: task.priority,
+        is_done: task.is_done,
+    }, { preserveScroll: true });
+};
 
 const addTask = () => {
     if (!title.value.trim()) return;
@@ -59,6 +79,15 @@ const saveCategory = () => {
     });
 };
 
+const toggleAdd = async () => {
+    showAdd.value = !showAdd.value;
+
+    if (showAdd.value) {
+        await nextTick();
+        titleInput.value?.focus();
+    }
+};
+
 const destroyCategory = async () => {
     if (await confirm(`Kategorie "${props.category.name}" inklusive aller Aufgaben wirklich löschen?`)) {
         router.delete(route('planner-categories.destroy', props.category.id), { preserveScroll: true });
@@ -84,7 +113,7 @@ const destroyCategory = async () => {
 
             <button
                 type="button"
-                @click="showAdd = !showAdd"
+                @click="toggleAdd"
                 class="rounded-lg border border-border px-3 py-1 text-sm font-medium text-foreground hover:bg-muted"
             >
                 + Aufgabe
@@ -119,6 +148,7 @@ const destroyCategory = async () => {
         <div v-if="showAdd" class="mb-3 space-y-2">
             <div class="flex gap-2">
                 <input
+                    ref="titleInput"
                     v-model="title"
                     type="text"
                     placeholder="Neue Aufgabe..."
@@ -147,12 +177,29 @@ const destroyCategory = async () => {
                 v-model="description"
                 rows="2"
                 placeholder="Beschreibung (optional)..."
-                class="mb-3 block w-full rounded-lg border-border text-sm shadow-sm focus:border-ring focus:ring-ring"
+                class="mb-3 block w-full min-w-0 max-w-full rounded-lg border-border text-sm shadow-sm break-words focus:border-ring focus:ring-ring"
             />
         </div>
 
-        <div v-if="tasks.length" class="space-y-2">
-            <TaskRow v-for="task in tasks" :key="task.id" :task="task" :date="date" />
-        </div>
+        <draggable
+            v-model="localTasks"
+            group="planner-tasks"
+            item-key="id"
+            handle=".drag-handle"
+            :animation="150"
+            ghost-class="opacity-40"
+            class="min-h-[2.5rem] space-y-2"
+            @change="onDragChange"
+        >
+            <template #item="{ element: task }">
+                <TaskRow :task="task" :date="date" />
+            </template>
+
+            <template #footer>
+                <p v-if="!localTasks.length" class="rounded-lg border border-dashed border-border py-3 text-center text-xs text-muted-foreground">
+                    Keine Aufgaben — hierher ziehen zum Verschieben.
+                </p>
+            </template>
+        </draggable>
     </div>
 </template>

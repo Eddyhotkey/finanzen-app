@@ -40,6 +40,11 @@ const props = defineProps({
         type: String,
         default: 'due_date',
     },
+
+    orientation: {
+        type: String,
+        default: 'horizontal', // 'horizontal' | 'vertical'
+    },
 });
 
 const { money } = useMoney();
@@ -65,11 +70,14 @@ const expensesByCategory = computed(() => {
         })
         .forEach(item => {
             const name = item.category?.name ?? 'Ohne Kategorie';
-            grouped[name] = (grouped[name] ?? 0) + Number(item.amount);
+            const color = item.category?.color ?? '#9ca3af';
+
+            grouped[name] ??= { amount: 0, color };
+            grouped[name].amount += Number(item.amount);
         });
 
     return Object.entries(grouped)
-        .map(([category, amount]) => ({ category, amount }))
+        .map(([category, { amount, color }]) => ({ category, amount, color }))
         .sort((a, b) => b.amount - a.amount);
 });
 
@@ -79,14 +87,15 @@ const chartData = computed(() => ({
         {
             label: 'Ausgaben',
             data: expensesByCategory.value.map(item => item.amount),
+            backgroundColor: expensesByCategory.value.map(item => item.color),
         },
     ],
 }));
 
-const chartOptions = {
+const chartOptions = computed(() => ({
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: 'y',
+    indexAxis: props.orientation === 'vertical' ? 'x' : 'y',
     plugins: {
         tooltip: {
             callbacks: {
@@ -94,7 +103,7 @@ const chartOptions = {
             },
         },
     },
-};
+}));
 </script>
 
 <template>
