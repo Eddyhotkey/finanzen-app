@@ -2,6 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
 import CategoryIcon from '@/Components/CategoryIcon.vue';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline';
 import { useConfirm } from '@/Composables/useConfirm';
 
 defineProps({
@@ -36,7 +37,57 @@ const deleteCategory = async (category) => {
             </Link>
         </div>
 
-        <div class="overflow-hidden rounded-lg bg-card shadow">
+        <!-- Mobile Cards -->
+        <div class="space-y-2 md:hidden">
+            <div
+                v-for="category in categories"
+                :key="category.id"
+                class="flex items-center gap-3 rounded-xl border border-border bg-card p-3 shadow-sm"
+            >
+                <span
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+                    :style="{ backgroundColor: category.color + '22', color: category.color }"
+                >
+                    <CategoryIcon :icon="category.icon" />
+                </span>
+
+                <div class="min-w-0 flex-1">
+                    <p class="truncate text-sm font-semibold text-foreground">
+                        {{ category.name }}
+                    </p>
+                    <p class="text-xs text-muted-foreground">
+                        {{ category.type === 'income' ? 'Einnahme' : 'Ausgabe' }}
+                    </p>
+                </div>
+
+                <div class="flex shrink-0 items-center gap-1">
+                    <Link
+                        :href="route('categories.edit', category.id)"
+                        class="p-1 text-muted-foreground hover:text-foreground"
+                    >
+                        <PencilSquareIcon class="h-4 w-4" />
+                    </Link>
+
+                    <button
+                        type="button"
+                        @click="deleteCategory(category)"
+                        class="p-1 text-muted-foreground hover:text-red-600"
+                    >
+                        <TrashIcon class="h-4 w-4" />
+                    </button>
+                </div>
+            </div>
+
+            <div
+                v-if="categories.length === 0"
+                class="rounded-xl border border-border bg-card p-8 text-center text-muted-foreground shadow-sm"
+            >
+                Noch keine Kategorien vorhanden.
+            </div>
+        </div>
+
+        <!-- Desktop Table -->
+        <div class="hidden overflow-hidden rounded-lg bg-card shadow md:block">
             <table class="w-full text-left text-sm">
                 <thead class="bg-muted text-muted-foreground">
                 <tr>

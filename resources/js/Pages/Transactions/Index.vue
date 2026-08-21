@@ -2,6 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import CategoryIcon from '@/Components/CategoryIcon.vue';
 import { Link, router } from '@inertiajs/vue3';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline';
 import { useDate } from '@/Composables/useDate';
 import { useMoney } from '@/Composables/useMoney';
 import { useConfirm } from '@/Composables/useConfirm';
@@ -42,52 +43,49 @@ const deleteTransaction = async (transaction) => {
         </div>
 
         <!-- Mobile Cards -->
-        <div class="space-y-3 md:hidden">
+        <div class="space-y-2 md:hidden">
             <div
                 v-for="transaction in transactions"
                 :key="transaction.id"
-                class="rounded-xl border border-border bg-card p-4 shadow-sm"
+                class="flex items-center gap-3 rounded-xl border border-border bg-card p-3 shadow-sm"
             >
-                <div class="flex items-start justify-between gap-3">
-                    <div class="flex min-w-0 items-center gap-3">
-                        <span
-                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
-                            :style="{ backgroundColor: transaction.category.color + '22', color: transaction.category.color }"
-                        >
-                            <CategoryIcon :icon="transaction.category.icon" />
-                        </span>
+                <span
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+                    :style="{ backgroundColor: transaction.category.color + '22', color: transaction.category.color }"
+                >
+                    <CategoryIcon :icon="transaction.category.icon" />
+                </span>
 
-                        <div class="min-w-0">
-                            <p class="truncate font-semibold text-foreground">
-                                {{ transaction.description || transaction.category.name }}
-                            </p>
-                            <p class="text-sm text-muted-foreground">
-                                {{ transaction.category.name }} · {{ formatDate(transaction.date) }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="shrink-0 text-right font-bold"
-                        :class="transaction.type === 'income' ? 'text-green-600' : 'text-red-600'"
-                    >
-                        {{ formatMoney(transaction.amount, transaction.type) }}
-                    </div>
+                <div class="min-w-0 flex-1">
+                    <p class="truncate text-sm font-semibold text-foreground">
+                        {{ transaction.description || transaction.category.name }}
+                    </p>
+                    <p class="truncate text-xs text-muted-foreground">
+                        {{ transaction.category.name }} · {{ formatDate(transaction.date) }}
+                    </p>
                 </div>
 
-                <div class="mt-4 flex justify-end gap-4 border-t border-border pt-3 text-sm">
+                <div
+                    class="shrink-0 text-right text-sm font-bold"
+                    :class="transaction.type === 'income' ? 'text-green-600' : 'text-red-600'"
+                >
+                    {{ formatMoney(transaction.amount, transaction.type) }}
+                </div>
+
+                <div class="flex shrink-0 items-center gap-1">
                     <Link
                         :href="route('transactions.edit', transaction.id)"
-                        class="text-blue-600 hover:underline"
+                        class="p-1 text-muted-foreground hover:text-foreground"
                     >
-                        Bearbeiten
+                        <PencilSquareIcon class="h-4 w-4" />
                     </Link>
 
                     <button
+                        type="button"
                         @click="deleteTransaction(transaction)"
-                        class="text-red-600 hover:underline"
+                        class="p-1 text-muted-foreground hover:text-red-600"
                     >
-                        Löschen
+                        <TrashIcon class="h-4 w-4" />
                     </button>
                 </div>
             </div>

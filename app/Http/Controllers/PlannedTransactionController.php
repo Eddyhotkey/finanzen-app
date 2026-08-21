@@ -18,6 +18,7 @@ class PlannedTransactionController extends Controller
             'plannedTransactions' => PlannedTransaction::with('category')
                 ->where('user_id', auth()->id())
                 ->whereBetween('due_date', [now()->startOfMonth(), now()->endOfMonth()])
+                ->orderByRaw('created_transaction_id is not null')
                 ->orderBy('due_date')
                 ->orderBy('id')
                 ->get(),
